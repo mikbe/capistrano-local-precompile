@@ -10,7 +10,7 @@ module Capistrano
         set(:precompile_cmd)   { "RAILS_ENV=#{precompile_env.to_s.shellescape} #{asset_env} #{rake} assets:precompile" }
         set(:cleanexpired_cmd) { "RAILS_ENV=#{rails_env.to_s.shellescape} #{asset_env} #{rake} assets:clean_expired" }
         set(:assets_dir)       { "public/assets" }
-        set(:rsync_cmd)        { "rsync -av" }
+        set(:rsync_cmd)        { "rsync -av #{fecth(:port) ? "-e ssh #{fecth(:port)} " : "" }" }
 
         before "deploy:assets:precompile", "deploy:assets:prepare"
         before "deploy:assets:symlink", "deploy:assets:remove_manifest"
